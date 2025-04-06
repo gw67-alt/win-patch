@@ -23,9 +23,6 @@ Windows Registry Editor Version 5.00
 [HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System]
 "EnableSecureUIAPaths"=dword:00000001
 
-[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer]
-"RestrictRun"=dword:00000001
-
 ;------------------------------------------------------------
 ; Configure Application Path Isolation
 ;------------------------------------------------------------
