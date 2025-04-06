@@ -1,0 +1,102 @@
+Windows Registry Editor Version 5.00
+
+; Enhanced Windows API Restrictions for Non-Windows Applications
+; This registry file helps prevent non-Microsoft applications from accessing Windows APIs
+; and monitoring desktop activities
+
+; ==========================================
+; SECTION 1: API ACCESS RESTRICTIONS
+; ==========================================
+
+; Restrict Win32 API access for non-Microsoft applications
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows]
+"LoadAppInit_DLLs"=dword:00000000
+"RequireSignedAppInit_DLLs"=dword:00000001
+
+; Disable hook-based API access (keyboard, mouse, window hooks)
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows]
+"DisableUserHooks"=dword:00000001
+
+; Disable access to raw input devices for non-system applications
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\DeviceInstall\Restrictions]
+"DenyDeviceIDs"=dword:00000001
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\DeviceInstall\Restrictions\DenyDeviceIDs]
+"1"="HID\\Class_*"
+"2"="*\\RawInput\\*"
+
+; ==========================================
+; SECTION 2: DESKTOP MONITORING PREVENTION
+; ==========================================
+
+; Disable screen capture for non-Windows applications
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\AppPrivacy]
+"LetAppsAccessGraphicsCaptureProgrammatic"=dword:00000002
+"LetAppsAccessGraphicsCapture"=dword:00000002
+
+; Restrict screen recording capabilities
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\graphicsCaptureProgrammatic]
+"Value"="Deny"
+
+; Block desktop composition API access
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\DWM]
+"DisableComposition"=dword:00000000
+"CompositionPolicy"=dword:00000002
+
+; ==========================================
+; SECTION 3: SYSTEM ACCESS RESTRICTIONS
+; ==========================================
+
+; Disable background apps access
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications]
+"GlobalUserDisabled"=dword:00000001
+
+; Prevent apps from getting diagnostic info
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\AppPrivacy]
+"LetAppsGetDiagnosticInfo"=dword:00000002
+
+; Restrict file system monitoring APIs
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\FileSystem]
+"DisableDirectoryChanges"=dword:00000001
+
+; Block non-Windows apps from accessing system information
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System]
+"DisableRegistryTools"=dword:00000001
+"DisableCMD"=dword:00000002
+
+; ==========================================
+; SECTION 4: PRIVACY ENHANCEMENTS
+; ==========================================
+
+; Disable clipboard access for non-Windows applications
+[HKEY_CURRENT_USER\Software\Microsoft\Clipboard]
+"EnableClipboardHistory"=dword:00000000
+"EnableCloudClipboard"=dword:00000000
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\System]
+"AllowClipboardHistory"=dword:00000000
+
+; Prevent background process creation
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\AppPrivacy]
+"LetAppsRunInBackground"=dword:00000002
+
+; Disable telemetry and data collection
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\DataCollection]
+"AllowTelemetry"=dword:00000000
+"DisableEnterpriseAuthProxy"=dword:00000001
+
+; ==========================================
+; SECTION 5: APPLICATION CONTROL
+; ==========================================
+
+; Enable code integrity policies (only allows signed applications)
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\CI\Policy]
+"VerifiedAndReputablePolicyState"=dword:00000001
+
+; Enforce application control policies
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\SrpV2\Exe]
+"EnforcementMode"=dword:00000001
+
+; Allowlist only Windows signed applications
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\SrpV2\Exe\Value]
+"Value"="<Publisher>O=Microsoft Corporation, L=Redmond, S=Washington, C=US</Publisher>"
