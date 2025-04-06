@@ -1,0 +1,32 @@
+Windows Registry Editor Version 5.00
+
+; ==========================================
+; SECTION 6: SPECIAL LOGON RESTRICTIONS
+; ==========================================
+
+; Disable special logon methods
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System]
+; Disable secondary logon service (prevents runas command and alternative credentials)
+"DisableSecondaryLogon"=dword:00000001
+
+; Disable fast user switching
+"HideFastUserSwitching"=dword:00000001
+
+; Disable task manager access
+"DisableTaskMgr"=dword:00000001
+
+; Disable Safe Mode boot options
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SafeBoot]
+"AlternateShell"="no.exe"
+
+; Disable Secure Attention Sequence (Ctrl+Alt+Del) for login
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System]
+"DisableCAD"=dword:00000001
+
+; Disable Remote Assistance
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Remote Assistance]
+"fAllowToGetHelp"=dword:00000000
+
+; Disable alternative credential providers
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\Credential Providers]
+"ProhibitCredentialProviders"=dword:00000001
