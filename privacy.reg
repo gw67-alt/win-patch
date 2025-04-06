@@ -1,0 +1,37 @@
+Windows Registry Editor Version 5.00
+
+; Desktop Privacy Protection Registry Settings
+; This registry file helps prevent applications from monitoring desktop activities
+
+; Disable screen capture for non-admin applications
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\AppPrivacy]
+"LetAppsAccessGraphicsCaptureProgrammatic"=dword:00000002
+"LetAppsAccessGraphicsCapture"=dword:00000002
+
+; Restrict screen recording capabilities
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\graphicsCaptureProgrammatic]
+"Value"="Deny"
+
+; Disable background apps access
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications]
+"GlobalUserDisabled"=dword:00000001
+
+; Disable app diagnostics access (prevents apps from collecting data about other apps)
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\AppPrivacy]
+"LetAppsGetDiagnosticInfo"=dword:00000002
+
+; Restrict access to screenshots folder
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\AppPrivacy]
+"LetAppsAccessPictures"=dword:00000002
+
+; Disable clipboard sync
+[HKEY_CURRENT_USER\Software\Microsoft\Clipboard]
+"EnableCloudClipboard"=dword:00000000
+
+; Prevent apps from running in background
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\AppPrivacy]
+"LetAppsRunInBackground"=dword:00000002
+
+; Disable telemetry data collection
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\DataCollection]
+"AllowTelemetry"=dword:00000000
