@@ -1,0 +1,37 @@
+Windows Registry Editor Version 5.00
+
+; Network Driver API Restriction Registry File
+; This registry file restricts network drivers from communicating with certain Windows APIs
+; IMPORTANT: Use at your own risk. Backup your registry before applying.
+
+; Disable access to sensitive API calls for network drivers
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\NetworkProvider]
+"RestrictRemoteClients"=dword:00000001
+"RestrictNullSessionAccess"=dword:00000001
+
+; Add restrictions to NDIS (Network Driver Interface Specification) drivers
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Ndis\Parameters]
+"BlockNetworkAPICalls"=dword:00000001
+"DisableNetworkQueryAPI"=dword:00000001
+"SecurityLevel"=dword:00000002
+
+; Restrict WFP (Windows Filtering Platform) API access
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\BFE\Parameters]
+"PolicyRestrictNetworkDrivers"=dword:00000001
+
+; Add AppLocker rules to block networking drivers from calling certain APIs
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\SrpV2\Drivers]
+"EnforcementMode"=dword:00000001
+
+; Add Driver Isolation policies
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\CI\Policy]
+"DriverIsolationEnabled"=dword:00000001
+"NetworkDriverRestrictionLevel"=dword:00000002
+
+; Restrict WinSock API access for drivers
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Winsock\Parameters]
+"RestrictDriverAccess"=dword:00000001
+
+; Network security settings
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL]
+"DriverProtectionMode"=dword:00000001
