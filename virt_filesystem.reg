@@ -1,0 +1,110 @@
+Windows Registry Editor Version 5.00
+
+;------------------------------------------------------------
+; Application Container Security Configuration
+; Restricts applications to their own folders
+;------------------------------------------------------------
+
+;------------------------------------------------------------
+; Enable Application Isolation through AppContainer
+;------------------------------------------------------------
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers]
+"EnableAppContainerChecks"=dword:00000001
+
+;------------------------------------------------------------
+; Set Default AppContainer Policy
+;------------------------------------------------------------
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\AppContainer]
+"EnabledByDefault"=dword:00000001
+
+;------------------------------------------------------------
+; Configure File System Access Restrictions
+;------------------------------------------------------------
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System]
+"EnableSecureUIAPaths"=dword:00000001
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer]
+"RestrictRun"=dword:00000001
+
+;------------------------------------------------------------
+; Configure Application Path Isolation
+;------------------------------------------------------------
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Compatibility Assistant\Persisted]
+"EnabledExclusivelyPersistedApplications"=dword:00000001
+
+;------------------------------------------------------------
+; Windows Defender Application Control settings
+;------------------------------------------------------------
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WDAC]
+"EnableWDAC"=dword:00000001
+"PolicyScope"=dword:00000001
+
+;------------------------------------------------------------
+; Software Restriction Policies - Path Rules
+;------------------------------------------------------------
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Safer\CodeIdentifiers]
+"DefaultLevel"=dword:00040000
+"TransparentEnabled"=dword:00000001
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Safer\CodeIdentifiers\0\Paths]
+; Path rule for Program Files - Allow
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Safer\CodeIdentifiers\0\Paths\{19609d33-783a-45cc-8baa-a46e1d6c7eb1}]
+"Description"="Program Files directory"
+"SaferFlags"=dword:00000000
+"ItemData"="%ProgramFiles%\\*"
+
+; Path rule for executables to only access their own directory
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Safer\CodeIdentifiers\0\Paths\{a1f3e9bc-f789-4e33-9bf4-82d22b57249a}]
+"Description"="Self folder container restriction"
+"SaferFlags"=dword:00000000
+"ItemData"="<AppPath>\\*"
+
+;------------------------------------------------------------
+; AppLocker settings - Enable application isolation
+;------------------------------------------------------------
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\SrpV2\Exe]
+"EnforcementMode"=dword:00000001
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\SrpV2\Exe\EnterpriseDefinedPolicy\{e1d9b406-c3c9-4a8d-8955-6b8b1a1d8b08}]
+"Value"="<Isolated Application Policy><FilePublisherRule Id=\"{6e640064-5600-4c91-a0b4-2fb40a1fe167}\" Name=\"Self-container access\" Description=\"Allow an application to access only its own folder\" UserOrGroupSid=\"S-1-1-0\" Action=\"Allow\"><Conditions><FilePublisherCondition PublisherName=\"*\" ProductName=\"*\" BinaryName=\"*\"><BinaryVersionRange LowSection=\"*\" HighSection=\"*\"/></FilePublisherCondition></Conditions><Exceptions><PathCondition Path=\"%OSDRIVE%\\$Recycle.bin\\*\"/></Exceptions></FilePublisherRule></Isolated Application Policy>"
+
+;------------------------------------------------------------
+; Process Mitigation Policy - Additional restrictions
+;------------------------------------------------------------
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\GlobalSettings]
+"MitigationOptions"=hex:01,01,01,00,00,00,00,00,00,00,00,00,00,00,00,00
+
+;------------------------------------------------------------
+; Enable per-application virtualization of file system
+;------------------------------------------------------------
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Virtualization]
+"EnableFileSystemRedirection"=dword:00000001
+"DefaultVirtualizationDirectory"="%LocalAppData%\\VirtualStore"
+
+;------------------------------------------------------------
+; Registry keys to restrict specific applications (examples)
+; Add your applications here
+;------------------------------------------------------------
+; Chrome browser containment
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome]
+"FileSystemAccess"=dword:00000002
+"RestrictFileSystemAccess"=dword:00000001
+
+; Firefox browser containment
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Mozilla\Firefox]
+"DisableFileSystemAccess"=dword:00000001
+
+; Limit non-system executables to their directory
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{d34a6ca6-1c29-4c29-8161-4abb2ae61dc1}]
+"CanonicalName"="ApplicationContainers"
+"LocalizedName"="@shell32.dll,-42005"
+
+;------------------------------------------------------------
+; Apply container settings to non-Microsoft applications
+;------------------------------------------------------------
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\ActiveDesktop]
+"NoNonWindowsExternalContent"=dword:00000001
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System]
+"EnableVirtualization"=dword:00000001
+"SelfContainerModeEnabled"=dword:00000001
